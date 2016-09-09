@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Animated sprite</title>
+		<script src="js/TiledImage.js"></script>
+	</head>
+	<body>
+		<canvas width="300" height="300" id="canvas"></canvas>
+		<script>
+			var sprite = new TiledImage("images/skeleton-walk.png", 9, 4);
+			sprite.addImage("images/item-hood-walk.png");
+			//sprite.addImage("images/item-shield-walk.png");
+			sprite.changeRow(3);
+			sprite.changeColumnInterval(1, 9);
+			var ctx = document.getElementById("canvas").getContext("2d");
+
+			tick();
+
+			function tick() {
+				ctx.clearRect(0, 0, 300, 300);
+				sprite.tick(ctx, 20, 20);
+
+				window.requestAnimationFrame(tick);
+			}
+
+
+		</script>
+	</body>
+</html>
