@@ -5,6 +5,7 @@
 	this.tickRefreshInterval = 100;
     this.horizontal = true;
     this.scale = 1.0;
+    this.flipped = false;
 
     if (scale !== undefined) {
     	this.scale = scale;
@@ -28,6 +29,10 @@
 	this.imageAnimationMin = 0;
 	this.imageAnimationMax = 0;
 }
+
+TiledImage.prototype.setFlipped = function (flipped) {
+    this.flipped = flipped;
+};
 
 TiledImage.prototype.addImage = function(imagePath) {
 	var image = new Image();
@@ -81,16 +86,27 @@ TiledImage.prototype.tick = function (ctx, spritePosX, spritePosY) {
 	for (var i = 0; i < this.imageList.length;i++) {
 
 		if (this.imageList[i].complete) {
+            if (this.flipped) {
+                ctx.save();
+                ctx.translate(Math.floor(spritePosX - this.imageList[i].width/this.imageTileColCount/2)  + 
+                				this.imageList[i].width/this.imageTileColCount * this.scale, 
+                			  Math.floor(spritePosY - this.imageList[i].height/this.imageTileRowCount/2));
+                ctx.scale(-1, 1);
+            }
+
 			ctx.drawImage(this.imageList[i],
 						  this.imageList[i].width/this.imageTileColCount * this.imageCurrentCol,
 						  this.imageList[i].height/this.imageTileRowCount * this.imageCurrentRow,
 						  this.imageList[i].width/this.imageTileColCount,
 						  this.imageList[i].height/this.imageTileRowCount,
-						  Math.floor(spritePosX - this.imageList[i].width/this.imageTileColCount/2),
-						  Math.floor(spritePosY - this.imageList[i].height/this.imageTileRowCount/2),
+						  this.flipped ? 0 : Math.floor(spritePosX - this.imageList[i].width/this.imageTileColCount/2),
+						  this.flipped ? 0 : Math.floor(spritePosY - this.imageList[i].height/this.imageTileRowCount/2),
 						  this.imageList[i].width/this.imageTileColCount * this.scale,
 						  this.imageList[i].height/this.imageTileRowCount * this.scale);
 
+            if (this.flipped) {
+                ctx.restore();
+            }
 
 			if (this.tickDrawFrameInterval == 0) {
                 if (this.horizontal) {

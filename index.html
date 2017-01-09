@@ -7,12 +7,13 @@
 	<body>
 		<canvas width="500" height="300" id="canvas"></canvas>
 		<script>
-			var sprite = new TiledImage("images/skeleton-walk.png", 9, 4, 100, true);
+			var sprite = new TiledImage("images/skeleton-walk.png", 9, 4, 100, true, 2.0);
 			//sprite.addImage("images/item-hood-walk.png");
 			sprite.addImage("images/item-shield-walk.png");
 			sprite.changeRow(3);
 			sprite.changeMinMaxInterval(1, 9);
-			
+			//sprite.setFlipped(true)
+
 			var ctx = document.getElementById("canvas").getContext("2d");
 
 			tick();
