@@ -43,11 +43,21 @@ TiledImage.prototype.addImage = function(imagePath) {
 // starts at 0
 TiledImage.prototype.changeRow = function(row) {
 	this.imageCurrentRow = row;
+
+    if (!this.horizontal) {
+         this.imageAnimationMin = row;
+         this.imageAnimationMax = row;
+    }
 }
 
 // starts at 0
 TiledImage.prototype.changeCol = function(col) {
 	this.imageCurrentCol = col;
+
+    if (this.horizontal) {
+         this.imageAnimationMin = col;
+         this.imageAnimationMax = col;
+    }
 }
 
 // starts at 0
@@ -88,8 +98,8 @@ TiledImage.prototype.tick = function (ctx, spritePosX, spritePosY) {
 		if (this.imageList[i].complete) {
             if (this.flipped) {
                 ctx.save();
-                ctx.translate(Math.floor(spritePosX - this.imageList[i].width/this.imageTileColCount/2)  + 
-                				this.imageList[i].width/this.imageTileColCount * this.scale, 
+                ctx.translate(Math.floor(spritePosX - this.imageList[i].width/this.imageTileColCount/2)  +
+                				this.imageList[i].width/this.imageTileColCount * this.scale,
                 			  Math.floor(spritePosY - this.imageList[i].height/this.imageTileRowCount/2));
                 ctx.scale(-1, 1);
             }
