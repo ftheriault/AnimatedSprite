@@ -1,9 +1,14 @@
- function TiledImage(imagePath, columns, rows, refreshInterval, horizontal) {
+ function TiledImage(imagePath, columns, rows, refreshInterval, horizontal, scale) {
 	this.imageList = new Array();
 	this.tickTime = 0;
 	this.tickDrawFrameInterval = 0;
 	this.tickRefreshInterval = 100;
     this.horizontal = true;
+    this.scale = 1.0;
+
+    if (scale !== undefined) {
+    	this.scale = scale;
+    }
 
     if (horizontal !== undefined) {
         this.horizontal = horizontal;
@@ -83,8 +88,8 @@ TiledImage.prototype.tick = function (ctx, spritePosX, spritePosY) {
 						  this.imageList[i].height/this.imageTileRowCount,
 						  Math.floor(spritePosX - this.imageList[i].width/this.imageTileColCount/2),
 						  Math.floor(spritePosY - this.imageList[i].height/this.imageTileRowCount/2),
-						  this.imageList[i].width/this.imageTileColCount,
-						  this.imageList[i].height/this.imageTileRowCount);
+						  this.imageList[i].width/this.imageTileColCount * this.scale,
+						  this.imageList[i].height/this.imageTileRowCount * this.scale);
 
 
 			if (this.tickDrawFrameInterval == 0) {
