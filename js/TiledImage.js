@@ -88,6 +88,14 @@ TiledImage.prototype.resetCol = function () {
 	this.imageCurrentCol = this.imageAnimationColMin;
 }
 
+TiledImage.prototype.getActualWidth = function () {
+	return this.imageList[0].width/this.imageTileColCount * this.scale;
+};
+
+TiledImage.prototype.getActualHeight = function () {
+	return this.imageList[0].height/this.imageTileRowCount * this.scale;
+};
+
 TiledImage.prototype.tick = function (ctx, spritePosX, spritePosY) {
 	var now = new Date().getTime();
 	var delta = now - (this.tickTime || now);
@@ -99,13 +107,14 @@ TiledImage.prototype.tick = function (ctx, spritePosX, spritePosY) {
 	}
 
 	for (var i = 0; i < this.imageList.length;i++) {
-
 		if (this.imageList[i].complete) {
+			var actualW = this.getActualWidth();
+			var actualH = this.getActualHeight();
+
 			if (this.flipped) {
 				ctx.save();
-				ctx.translate(Math.floor(spritePosX - this.imageList[i].width/this.imageTileColCount/2)  +
-							   this.imageList[i].width/this.imageTileColCount * this.scale,
-							 Math.floor(spritePosY - this.imageList[i].height/this.imageTileRowCount/2));
+				ctx.translate(Math.floor(spritePosX - actualW/2) + actualW,
+							  Math.floor(spritePosY - actualH/2));
 				ctx.scale(-1, 1);
 			}
 
@@ -114,10 +123,10 @@ TiledImage.prototype.tick = function (ctx, spritePosX, spritePosY) {
 						 this.imageList[i].height/this.imageTileRowCount * this.imageCurrentRow,
 						 this.imageList[i].width/this.imageTileColCount,
 						 this.imageList[i].height/this.imageTileRowCount,
-						 this.flipped ? 0 : Math.floor(spritePosX - this.imageList[i].width/this.imageTileColCount/2),
-						 this.flipped ? 0 : Math.floor(spritePosY - this.imageList[i].height/this.imageTileRowCount/2),
-						 this.imageList[i].width/this.imageTileColCount * this.scale,
-						 this.imageList[i].height/this.imageTileRowCount * this.scale);
+						 this.flipped ? 0 : Math.floor(spritePosX - actualW/2),
+						 this.flipped ? 0 : Math.floor(spritePosY - actualH/2),
+						 actualW,
+						 actualH);
 
 			if (this.flipped) {
 				ctx.restore();
