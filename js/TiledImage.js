@@ -131,25 +131,25 @@ TiledImage.prototype.tick = function (ctx, spritePosX, spritePosY) {
 			if (this.flipped) {
 				ctx.restore();
 			}
-
-			if (this.tickDrawFrameInterval == 0) {
-				if (this.horizontal) {
-					if (this.imageCurrentCol + 1 >= this.imageAnimationMax) {
-						if (this.looped) this.imageCurrentCol = this.imageAnimationMin;
-					}
-					else {
-						this.imageCurrentCol++;
-					}
-				}
-				else {
-					if (this.imageCurrentRow + 1 >= this.imageAnimationMax) {
-						if (this.looped) this.imageCurrentRow = this.imageAnimationMin;
-					}
-					else {
-						this.imageCurrentRow++;
-					}
-				}
+	   	}
+	}
+	
+	if (this.tickDrawFrameInterval == 0) {
+		if (this.horizontal) {
+			if (this.imageCurrentCol + 1 >= this.imageAnimationMax) {
+				if (this.looped) this.imageCurrentCol = this.imageAnimationMin;
 			}
-	   }
+			else {
+				this.imageCurrentCol++;
+			}
+		}
+		else {
+			if (this.imageCurrentRow + 1 >= this.imageAnimationMax) {
+				if (this.looped) this.imageCurrentRow = this.imageAnimationMin;
+			}
+			else {
+				this.imageCurrentRow++;
+			}
+		}
 	}
 }
