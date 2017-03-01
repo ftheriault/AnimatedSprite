@@ -5,16 +5,20 @@
 		<script src="js/TiledImage.js"></script>
 	</head>
 	<body>
+		<div id="spriteDOM"></div>
 		<canvas width="500" height="300" id="canvas"></canvas>
 		<script>
-			var sprite = new TiledImage("images/skeleton-walk.png", 9, 4, 100, true, 1.0);
-			//sprite.addImage("images/item-hood-walk.png");
-			sprite.addImage("images/item-shield-walk.png");
-			sprite.changeRow(3);
-			sprite.changeMinMaxInterval(1, 9);
+			var spriteCtx = new TiledImage("images/skeleton-walk.png", 9, 4, 100, true, 1.0, null);
+			spriteCtx.addImage("images/item-shield-walk.png");
+			spriteCtx.changeRow(3);
+			spriteCtx.changeMinMaxInterval(1, 9);
 			//sprite.setFlipped(true)
 			//sprite.setLooped(false)
 
+			var spriteDOM = new TiledImage("images/skeleton-walk.png", 9, 4, 50, true, 0.8, "spriteDOM");
+			spriteDOM.addImage("images/item-hood-walk.png");
+			spriteDOM.changeMinMaxInterval(1, 9);			
+			
 			var ctx = document.getElementById("canvas").getContext("2d");
 
 			tick();
@@ -22,7 +26,9 @@
 			function tick() {
 				ctx.clearRect(0, 0, 500, 300);
 
-				sprite.tick(ctx, 220, 120);
+				spriteCtx.tick(220, 120, ctx);
+
+				spriteDOM.tick(20, 20);
 
 				window.requestAnimationFrame(tick);
 			}

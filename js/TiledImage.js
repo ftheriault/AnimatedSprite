@@ -1,4 +1,10 @@
-function TiledImage(imagePath, columns, rows, refreshInterval, horizontal, scale) {
+function TiledImage(imagePath, columns, rows, refreshInterval, horizontal, scale, nodeID) {
+	this.nodeID = nodeID;
+
+	if (this.nodeID != null) {
+		document.getElementById(this.nodeID).style.position = "absolute";
+	}
+
 	this.imageList = new Array();
 	this.tickTime = 0;
 	this.tickDrawFrameInterval = 0;
@@ -96,7 +102,29 @@ TiledImage.prototype.getActualHeight = function () {
 	return this.imageList[0].height/this.imageTileRowCount * this.scale;
 };
 
-TiledImage.prototype.tick = function (ctx, spritePosX, spritePosY) {
+TiledImage.prototype.tick = function (spritePosX, spritePosY, ctx) {
+	if (ctx == null) {
+		if (this.imageList[0].complete) {
+			var canvas = document.getElementById(this.nodeID + "-canvas");
+			var w = this.getActualWidth();
+			var h = this.getActualHeight();
+
+			if (canvas == null) {
+				document.getElementById(this.nodeID).innerHTML = "<canvas id='" + this.nodeID + "-canvas' width='" + w + "' height='" + h + "'></canvas>";
+				canvas = document.getElementById(this.nodeID + "-canvas");
+			}
+
+			document.getElementById(this.nodeID).style.left = spritePosX + "px";
+			document.getElementById(this.nodeID).style.top = spritePosY + "px";
+			
+			spritePosX = w/2;
+			spritePosY = h/2;
+
+			ctx = canvas.getContext("2d");			
+			ctx.clearRect(0, 0, w, h);
+		}
+	}
+
 	var now = new Date().getTime();
 	var delta = now - (this.tickTime || now);
 	this.tickTime = now;
@@ -107,14 +135,14 @@ TiledImage.prototype.tick = function (ctx, spritePosX, spritePosY) {
 	}
 
 	for (var i = 0; i < this.imageList.length;i++) {
-		if (this.imageList[i].complete) {
+		if (this.imageList[i].complete && ctx != null) {
 			var actualW = this.getActualWidth();
 			var actualH = this.getActualHeight();
 
 			if (this.flipped) {
 				ctx.save();
 				ctx.translate(Math.floor(spritePosX - actualW/2) + actualW,
-							  Math.floor(spritePosY - actualH/2));
+							Math.floor(spritePosY - actualH/2));
 				ctx.scale(-1, 1);
 			}
 
