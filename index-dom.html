@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Animated sprite</title>
+		<script src="js/TiledImage.js"></script>
+	</head>
+	<body>
+		<div id="spriteDOM"></div>
+		<canvas width="500" height="300" id="canvas"></canvas>
+		<script>
+			// =======================================================
+			// Embed animation in a div
+			// -------------------------------------------------------
+			let spriteDOM = new TiledImage("images/skeleton-walk.png", 9, 4, 50, true, 0.8, "spriteDOM");
+			spriteDOM.addImage("images/item-hood-walk.png");
+			spriteDOM.changeMinMaxInterval(1, 9);			
+			
+			let ctx = document.getElementById("canvas").getContext("2d");
+
+			tick();
+
+			function tick() {
+				ctx.clearRect(0, 0, 500, 300);
+
+				spriteDOM.tick(20, 20);
+
+				window.requestAnimationFrame(tick);
+			}
+
+
+		</script>
+	</body>
+</html>
