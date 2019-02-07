@@ -6,17 +6,16 @@
 	</head>
 	<body>
 		<div id="spriteDOM"></div>
-		<canvas width="500" height="300" id="canvas"></canvas>
+		
 		<script>
 			// =======================================================
 			// Embed animation in a div
+			// Works the same way, with the same features, but embeds the sprite in a div instead of a canvas
 			// -------------------------------------------------------
 			let spriteDOM = new TiledImage("images/skeleton-walk.png", 9, 4, 50, true, 0.8, "spriteDOM");
 			spriteDOM.addImage("images/item-hood-walk.png");
 			spriteDOM.changeMinMaxInterval(1, 9);			
 			
-			let ctx = document.getElementById("canvas").getContext("2d");
-
 			tick();
 
 			function tick() {
