@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<title>Animated sprite</title>
+		<meta charset="utf-8">
 		<script src="js/TiledImage.js"></script>
 	</head>
 	<body>
@@ -16,17 +17,17 @@
 			let refreshDelay = 100; 			// msec
 			let loopColumns = true; 			// or by row?
 			let scale = 1.0;
-			let sprite = new TiledImage("images/skeleton-walk.png", columnCount, rowCount, refreshDelay, loopColumns, scale, null);
-			sprite.changeRow(3);				// One row per animation
-			sprite.changeMinMaxInterval(1, 9); 	// Loop from which column to which column?
+			let tiledImage = new TiledImage("images/skeleton-walk.png", columnCount, rowCount, refreshDelay, loopColumns, scale, null);
+			tiledImage.changeRow(3);				// One row per animation
+			tiledImage.changeMinMaxInterval(1, 9); 	// Loop from which column to which column?
 
 			// You can stack images!
-			//sprite.addImage("images/item-hood-walk.png");
-			sprite.addImage("images/item-shield-walk.png");
+			//tiledImage.addImage("images/item-hood-walk.png");
+			tiledImage.addImage("images/item-shield-walk.png");
 
 			// Other functions : 
-			//   - sprite.setFlipped(true);		// Horizontally
-			//   - sprite.setLooped(false);
+			//   - tiledImage.setFlipped(true);		// Horizontally
+			//   - tiledImage.setLooped(false);
 			
 			let ctx = document.getElementById("canvas").getContext("2d");
 
@@ -35,7 +36,7 @@
 			function tick() {
 				ctx.clearRect(0, 0, 500, 300);
 
-				sprite.tick(220, 120, ctx);
+				tiledImage.tick(220, 120, ctx);
 
 				window.requestAnimationFrame(tick);
 			}
