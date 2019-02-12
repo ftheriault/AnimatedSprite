@@ -15,10 +15,11 @@
 			// -------------------------------------------------------
 			let tiledImageDOM = new TiledImage("images/skeleton-walk.png", 9, 4, 100, true, 0.8, "spriteDOM");
 			tiledImageDOM.addImage("images/item-hood-walk.png");
+			
 			tiledImageDOM.changeRow(3);				
-			tiledImageDOM.changeMinMaxInterval(0, 9, () => {
+			tiledImageDOM.changeMinMaxInterval(0, 8, () => {
 				tiledImageDOM.changeRow(1);
-				tiledImageDOM.changeMinMaxInterval(0, 9);
+				tiledImageDOM.changeMinMaxInterval(0, 8);
 			});	
 			
 			tick();
