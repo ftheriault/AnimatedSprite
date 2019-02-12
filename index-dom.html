@@ -13,9 +13,13 @@
 			// Embed animation in a div
 			// Works the same way, with the same features, but embeds the sprite in a div instead of a canvas
 			// -------------------------------------------------------
-			let tiledImageDOM = new TiledImage("images/skeleton-walk.png", 9, 4, 50, true, 0.8, "spriteDOM");
+			let tiledImageDOM = new TiledImage("images/skeleton-walk.png", 9, 4, 100, true, 0.8, "spriteDOM");
 			tiledImageDOM.addImage("images/item-hood-walk.png");
-			tiledImageDOM.changeMinMaxInterval(1, 9);			
+			tiledImageDOM.changeRow(3);				
+			tiledImageDOM.changeMinMaxInterval(0, 9, () => {
+				tiledImageDOM.changeRow(1);
+				tiledImageDOM.changeMinMaxInterval(0, 9);
+			});	
 			
 			tick();
 

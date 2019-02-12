@@ -72,22 +72,24 @@ TiledImage.prototype.changeCol = function(col) {
 }
 
 // starts at 0
-TiledImage.prototype.changeMinMaxInterval = function (min, max) {
+TiledImage.prototype.changeMinMaxInterval = function (min, max, doneEvent = null) {
+	max += 1;
+	
+	if (this.imageTileColCount < max) {
+		max = this.imageTileColCount;
+	}
+	
 	this.imageAnimationMin = min;
 	this.imageAnimationMax = max;
 
 	if (this.horizontal) {
-		if (this.imageCurrentCol < this.imageAnimationMin ||
-		   this.imageCurrentCol > this.imageAnimationMax) {
-		   this.imageCurrentCol = this.imageAnimationMin;
-		}
+		this.imageCurrentCol = this.imageAnimationMin;
 	}
 	else {
-		if (this.imageCurrentRow < this.imageAnimationMin ||
-		   this.imageCurrentRow > this.imageAnimationMax) {
-		   this.imageCurrentRow = this.imageAnimationMin;
-		}
+		this.imageCurrentRow = this.imageAnimationMin;
 	}
+	
+	this.doneEvent = doneEvent;
 }
 
 TiledImage.prototype.resetCol = function () {
@@ -165,7 +167,14 @@ TiledImage.prototype.tick = function (spritePosX, spritePosY, ctx) {
 	if (this.tickDrawFrameInterval == 0) {
 		if (this.horizontal) {
 			if (this.imageCurrentCol + 1 >= this.imageAnimationMax) {
-				if (this.looped) this.imageCurrentCol = this.imageAnimationMin;
+				if (this.doneEvent != null) {
+					let doneEvent = this.doneEvent;
+					this.doneEvent = null;
+					doneEvent();
+				}
+				else if (this.looped) {
+					this.imageCurrentCol = this.imageAnimationMin;
+				}
 			}
 			else {
 				this.imageCurrentCol++;
@@ -173,7 +182,14 @@ TiledImage.prototype.tick = function (spritePosX, spritePosY, ctx) {
 		}
 		else {
 			if (this.imageCurrentRow + 1 >= this.imageAnimationMax) {
-				if (this.looped) this.imageCurrentRow = this.imageAnimationMin;
+				if (this.doneEvent != null) {
+					let doneEvent = this.doneEvent;
+					this.doneEvent = null;
+					doneEvent();
+				}
+				else if (this.looped) {
+					this.imageCurrentRow = this.imageAnimationMin;
+				}
 			}
 			else {
 				this.imageCurrentRow++;
