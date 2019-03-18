@@ -35,6 +35,7 @@ function TiledImage(imagePath, columns, rows, refreshInterval, horizontal, scale
 	this.imageCurrentRow = 0;
 	this.imageAnimationMin = 0;
 	this.imageAnimationMax = 0;
+	this.angle = 0;
 }
 
 TiledImage.prototype.setFlipped = function (flipped) {
@@ -74,11 +75,11 @@ TiledImage.prototype.changeCol = function(col) {
 // starts at 0
 TiledImage.prototype.changeMinMaxInterval = function (min, max, doneEvent = null) {
 	max += 1;
-	
+
 	if (this.imageTileColCount < max) {
 		max = this.imageTileColCount;
 	}
-	
+
 	this.imageAnimationMin = min;
 	this.imageAnimationMax = max;
 
@@ -88,12 +89,16 @@ TiledImage.prototype.changeMinMaxInterval = function (min, max, doneEvent = null
 	else {
 		this.imageCurrentRow = this.imageAnimationMin;
 	}
-	
+
 	this.doneEvent = doneEvent;
 }
 
 TiledImage.prototype.resetCol = function () {
 	this.imageCurrentCol = this.imageAnimationColMin;
+}
+
+TiledImage.prototype.setRotationAngle = function (angle) {
+	this.angle = angle;
 }
 
 TiledImage.prototype.getActualWidth = function () {
@@ -118,11 +123,11 @@ TiledImage.prototype.tick = function (spritePosX, spritePosY, ctx) {
 
 			document.getElementById(this.nodeID).style.left = spritePosX + "px";
 			document.getElementById(this.nodeID).style.top = spritePosY + "px";
-			
+
 			spritePosX = w/2;
 			spritePosY = h/2;
 
-			ctx = canvas.getContext("2d");			
+			ctx = canvas.getContext("2d");
 			ctx.clearRect(0, 0, w, h);
 		}
 	}
@@ -136,16 +141,33 @@ TiledImage.prototype.tick = function (spritePosX, spritePosY, ctx) {
 		this.tickDrawFrameInterval = 0;
 	}
 
+	var actualW = this.getActualWidth();
+	var actualH = this.getActualHeight();
+
 	for (var i = 0; i < this.imageList.length;i++) {
 		if (this.imageList[i].complete && ctx != null) {
-			var actualW = this.getActualWidth();
-			var actualH = this.getActualHeight();
+			let x = Math.floor(spritePosX - actualW/2);
+			let y = Math.floor(spritePosY - actualH/2);
+
+			if (this.flipped || this.angle != 0) {
+				ctx.save();
+			}
 
 			if (this.flipped) {
-				ctx.save();
 				ctx.translate(Math.floor(spritePosX - actualW/2) + actualW,
 							Math.floor(spritePosY - actualH/2));
 				ctx.scale(-1, 1);
+				x = 0;
+				y = 0;
+			}
+
+			if (this.angle != 0) {
+				ctx.translate(Math.floor(spritePosX),
+							  Math.floor(spritePosY));
+				ctx.rotate((this.flipped ? -1 : 1) * this.angle * Math.PI/ 180);
+
+				x = -actualW/2;
+				y = -actualH/2;
 			}
 
 			ctx.drawImage(this.imageList[i],
@@ -153,17 +175,18 @@ TiledImage.prototype.tick = function (spritePosX, spritePosY, ctx) {
 						 this.imageList[i].height/this.imageTileRowCount * this.imageCurrentRow,
 						 this.imageList[i].width/this.imageTileColCount,
 						 this.imageList[i].height/this.imageTileRowCount,
-						 this.flipped ? 0 : Math.floor(spritePosX - actualW/2),
-						 this.flipped ? 0 : Math.floor(spritePosY - actualH/2),
+						 x,
+						 y,
 						 actualW,
 						 actualH);
 
-			if (this.flipped) {
+			if (this.flipped || this.angle != 0) {
 				ctx.restore();
 			}
+
 	   	}
 	}
-	
+
 	if (this.tickDrawFrameInterval == 0) {
 		if (this.horizontal) {
 			if (this.imageCurrentCol + 1 >= this.imageAnimationMax) {

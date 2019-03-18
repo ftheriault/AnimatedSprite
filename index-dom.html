@@ -6,8 +6,8 @@
 		<script src="js/TiledImage.js"></script>
 	</head>
 	<body>
-		<div id="spriteDOM"></div>
-		
+		<div id="spriteDOM" style="border:1px solid red"></div>
+
 		<script>
 			// =======================================================
 			// Embed animation in a div
@@ -15,17 +15,17 @@
 			// -------------------------------------------------------
 			let tiledImageDOM = new TiledImage("images/skeleton-walk.png", 9, 4, 100, true, 0.8, "spriteDOM");
 			tiledImageDOM.addImage("images/item-hood-walk.png");
-			
-			tiledImageDOM.changeRow(3);				
+
+			tiledImageDOM.changeRow(3);
 			tiledImageDOM.changeMinMaxInterval(0, 8, () => {
 				tiledImageDOM.changeRow(1);
 				tiledImageDOM.changeMinMaxInterval(0, 8);
-			});	
-			
+			});
+
 			tick();
 
 			function tick() {
-				tiledImageDOM.tick(20, 20);
+				tiledImageDOM.tick(50, 50);
 
 				window.requestAnimationFrame(tick);
 			}
