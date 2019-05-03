@@ -36,7 +36,19 @@ function TiledImage(imagePath, columns, rows, refreshInterval, horizontal, scale
 	this.imageAnimationMin = 0;
 	this.imageAnimationMax = 0;
 	this.angle = 0;
+	this.fullImageIdx = 0;
+	this.fullImageCount = null;
+	this.fullImageCallback = null;
 }
+
+TiledImage.prototype.setFullImageLoop = function (count, fullImageCallback = null) {
+	this.fullImageCallback = fullImageCallback;
+	this.imageAnimationMax = this.imageTileColCount;
+	this.imageCurrentCol = 0;
+	this.imageCurrentRow = 0;
+	this.fullImageIdx = 0;
+	this.fullImageCount = count;
+};
 
 TiledImage.prototype.setFlipped = function (flipped) {
 	this.flipped = flipped;
@@ -189,6 +201,26 @@ TiledImage.prototype.tick = function (spritePosX, spritePosY, ctx) {
 
 	if (this.tickDrawFrameInterval == 0) {
 		if (this.horizontal) {
+			if (this.fullImageCount != null) {
+				this.fullImageIdx += 1;
+
+				if (this.fullImageIdx == this.fullImageCount) {
+					this.fullImageIdx = 0;
+					this.imageCurrentCol = 0;
+					this.imageCurrentRow = 0;
+
+					if (this.fullImageCallback != null) {
+						this.fullImageCallback();
+					}
+				}
+				else {
+					if (this.imageCurrentCol + 1 >= this.imageTileColCount) {
+						this.imageCurrentCol = 0;
+						this.imageCurrentRow++;
+					}
+				}
+			}
+
 			if (this.imageCurrentCol + 1 >= this.imageAnimationMax) {
 				if (this.doneEvent != null) {
 					let doneEvent = this.doneEvent;
@@ -204,6 +236,26 @@ TiledImage.prototype.tick = function (spritePosX, spritePosY, ctx) {
 			}
 		}
 		else {
+			if (this.fullImageCount != null) {
+				this.fullImageIdx += 1;
+
+				if (this.fullImageIdx == this.fullImageCount) {
+					if (this.fullImageCallback != null) {
+						this.fullImageCallback();
+					}
+
+					this.fullImageIdx = 0;
+					this.imageCurrentCol = 0;
+					this.imageCurrentRow = 0;
+				}
+				else {
+					if (this.imageCurrentRow + 1 >= this.imageAnimationMax) {
+						this.imageCurrentRow = 0;
+						this.imageCurrentCol++;
+					}
+				}
+			}
+
 			if (this.imageCurrentRow + 1 >= this.imageAnimationMax) {
 				if (this.doneEvent != null) {
 					let doneEvent = this.doneEvent;
