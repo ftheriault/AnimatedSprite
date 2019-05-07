@@ -34,17 +34,16 @@ function TiledImage(imagePath, columns, rows, refreshInterval, horizontal, scale
 	this.imageCurrentCol = 0;
 	this.imageCurrentRow = 0;
 	this.imageAnimationMin = 0;
-	this.imageAnimationMax = 0;
 	this.angle = 0;
 	this.opacity = 1;
 	this.fullImageIdx = 0;
 	this.fullImageCount = null;
 	this.fullImageCallback = null;
+	this.stopped = true;
 }
 
 TiledImage.prototype.setFullImageLoop = function (count, fullImageCallback = null) {
 	this.fullImageCallback = fullImageCallback;
-	this.imageAnimationMax = this.imageTileColCount;
 	this.imageCurrentCol = 0;
 	this.imageCurrentRow = 0;
 	this.fullImageIdx = 0;
@@ -139,6 +138,7 @@ TiledImage.prototype.stop = function () {
 };
 
 TiledImage.prototype.tick = function (spritePosX, spritePosY, ctx) {
+
 	if (ctx == null) {
 		if (this.imageList[0].complete) {
 			var canvas = document.getElementById(this.nodeID + "-canvas");
@@ -225,7 +225,7 @@ TiledImage.prototype.tick = function (spritePosX, spritePosY, ctx) {
 
 				if (this.fullImageIdx == this.fullImageCount) {
 					this.fullImageIdx = 0;
-					this.imageCurrentCol = 0;
+					this.imageCurrentCol = -1;
 					this.imageCurrentRow = 0;
 
 					if (this.fullImageCallback != null) {
@@ -234,13 +234,13 @@ TiledImage.prototype.tick = function (spritePosX, spritePosY, ctx) {
 				}
 				else {
 					if (this.imageCurrentCol + 1 >= this.imageTileColCount) {
-						this.imageCurrentCol = 0;
+						this.imageCurrentCol = -1;
 						this.imageCurrentRow++;
 					}
 				}
 			}
 
-			if (this.imageCurrentCol + 1 >= this.imageAnimationMax) {
+			if (this.imageCurrentCol + 1 >= this.imageTileColCount) {
 				if (this.doneEvent != null) {
 					let doneEvent = this.doneEvent;
 					this.doneEvent = null;
@@ -259,23 +259,23 @@ TiledImage.prototype.tick = function (spritePosX, spritePosY, ctx) {
 				this.fullImageIdx += 1;
 
 				if (this.fullImageIdx == this.fullImageCount) {
+					this.fullImageIdx = 0;
+					this.imageCurrentCol = 0;
+					this.imageCurrentRow = -1;
+
 					if (this.fullImageCallback != null) {
 						this.fullImageCallback();
 					}
-
-					this.fullImageIdx = 0;
-					this.imageCurrentCol = 0;
-					this.imageCurrentRow = 0;
 				}
 				else {
-					if (this.imageCurrentRow + 1 >= this.imageAnimationMax) {
-						this.imageCurrentRow = 0;
+					if (this.imageCurrentRow + 1 >= this.imageTileRowCount) {
+						this.imageCurrentRow = -1;
 						this.imageCurrentCol++;
 					}
 				}
 			}
 
-			if (this.imageCurrentRow + 1 >= this.imageAnimationMax) {
+			if (this.imageCurrentRow + 1 >= this.imageTileRowCount) {
 				if (this.doneEvent != null) {
 					let doneEvent = this.doneEvent;
 					this.doneEvent = null;
