@@ -36,6 +36,7 @@ function TiledImage(imagePath, columns, rows, refreshInterval, horizontal, scale
 	this.imageAnimationMin = 0;
 	this.imageAnimationMax = 0;
 	this.angle = 0;
+	this.opacity = 1;
 	this.fullImageIdx = 0;
 	this.fullImageCount = null;
 	this.fullImageCallback = null;
@@ -48,11 +49,19 @@ TiledImage.prototype.setFullImageLoop = function (count, fullImageCallback = nul
 	this.imageCurrentRow = 0;
 	this.fullImageIdx = 0;
 	this.fullImageCount = count;
+	this.stopped = false;
 };
 
 TiledImage.prototype.setFlipped = function (flipped) {
 	this.flipped = flipped;
 };
+TiledImage.prototype.setOpacity = function (opacity) {
+	if (opacity > 1) opacity = 1;
+	if (opacity < 0) opacity = 0;
+
+	this.opacity = opacity;
+};
+
 
 TiledImage.prototype.setLooped = function (looped) {
 	this.looped = looped;
@@ -67,6 +76,7 @@ TiledImage.prototype.addImage = function(imagePath) {
 // starts at 0
 TiledImage.prototype.changeRow = function(row) {
 	this.imageCurrentRow = row;
+	this.stopped = false;
 
 	if (!this.horizontal) {
 		this.imageAnimationMin = row;
@@ -77,6 +87,7 @@ TiledImage.prototype.changeRow = function(row) {
 // starts at 0
 TiledImage.prototype.changeCol = function(col) {
 	this.imageCurrentCol = col;
+	this.stopped = false;
 
 	if (this.horizontal) {
 		this.imageAnimationMin = col;
@@ -87,6 +98,7 @@ TiledImage.prototype.changeCol = function(col) {
 // starts at 0
 TiledImage.prototype.changeMinMaxInterval = function (min, max, doneEvent = null) {
 	max += 1;
+	this.stopped = false;
 
 	if (this.imageTileColCount < max) {
 		max = this.imageTileColCount;
@@ -107,6 +119,7 @@ TiledImage.prototype.changeMinMaxInterval = function (min, max, doneEvent = null
 
 TiledImage.prototype.resetCol = function () {
 	this.imageCurrentCol = this.imageAnimationColMin;
+	this.stopped = false;
 }
 
 TiledImage.prototype.setRotationAngle = function (angle) {
@@ -119,6 +132,10 @@ TiledImage.prototype.getActualWidth = function () {
 
 TiledImage.prototype.getActualHeight = function () {
 	return this.imageList[0].height/this.imageTileRowCount * this.scale;
+};
+
+TiledImage.prototype.stop = function () {
+	this.stopped = true;
 };
 
 TiledImage.prototype.tick = function (spritePosX, spritePosY, ctx) {
@@ -149,7 +166,7 @@ TiledImage.prototype.tick = function (spritePosX, spritePosY, ctx) {
 	this.tickTime = now;
 	this.tickDrawFrameInterval += delta;
 
-	if (this.tickDrawFrameInterval > this.tickRefreshInterval) {
+	if (this.tickDrawFrameInterval > this.tickRefreshInterval && !this.stopped) {
 		this.tickDrawFrameInterval = 0;
 	}
 
@@ -161,7 +178,7 @@ TiledImage.prototype.tick = function (spritePosX, spritePosY, ctx) {
 			let x = Math.floor(spritePosX - actualW/2);
 			let y = Math.floor(spritePosY - actualH/2);
 
-			if (this.flipped || this.angle != 0) {
+			if (this.flipped || this.angle != 0 || this.opacity != 1) {
 				ctx.save();
 			}
 
@@ -182,6 +199,8 @@ TiledImage.prototype.tick = function (spritePosX, spritePosY, ctx) {
 				y = -actualH/2;
 			}
 
+			if (this.opacity != 1) ctx.globalAlpha   = this.opacity;
+
 			ctx.drawImage(this.imageList[i],
 						 this.imageList[i].width/this.imageTileColCount * this.imageCurrentCol,
 						 this.imageList[i].height/this.imageTileRowCount * this.imageCurrentRow,
@@ -192,7 +211,7 @@ TiledImage.prototype.tick = function (spritePosX, spritePosY, ctx) {
 						 actualW,
 						 actualH);
 
-			if (this.flipped || this.angle != 0) {
+			if (this.flipped || this.angle != 0 || this.opacity != 1) {
 				ctx.restore();
 			}
 
