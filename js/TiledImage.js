@@ -34,6 +34,7 @@ function TiledImage(imagePath, columns, rows, refreshInterval, horizontal, scale
 	this.imageCurrentCol = 0;
 	this.imageCurrentRow = 0;
 	this.imageAnimationMin = 0;
+	this.imageAnimationMax = columns;
 	this.angle = 0;
 	this.opacity = 1;
 	this.fullImageIdx = 0;
@@ -240,7 +241,8 @@ TiledImage.prototype.tick = function (spritePosX, spritePosY, ctx) {
 				}
 			}
 
-			if (this.imageCurrentCol + 1 >= this.imageTileColCount) {
+			if ((this.fullImageCount == null && this.imageCurrentCol + 1 >= this.imageAnimationMax) ||
+				(this.fullImageCount != null && this.imageCurrentCol + 1 >= this.imageTileColCount)) {
 				if (this.doneEvent != null) {
 					let doneEvent = this.doneEvent;
 					this.doneEvent = null;
@@ -275,7 +277,8 @@ TiledImage.prototype.tick = function (spritePosX, spritePosY, ctx) {
 				}
 			}
 
-			if (this.imageCurrentRow + 1 >= this.imageTileRowCount) {
+			if ((this.fullImageCount == null && this.imageCurrentRow + 1 >= this.imageAnimationMax) ||
+				(this.fullImageCount != null && this.imageCurrentRow + 1 >= this.imageTileRowCount)){
 				if (this.doneEvent != null) {
 					let doneEvent = this.doneEvent;
 					this.doneEvent = null;
