@@ -134,8 +134,8 @@ TiledImage.prototype.getActualHeight = function () {
 	return this.imageList[0].height/this.imageTileRowCount * this.scale;
 };
 
-TiledImage.prototype.stop = function () {
-	this.stopped = true;
+TiledImage.prototype.setEnabled = function (enabled) {
+	this.stopped = !enabled;
 };
 
 TiledImage.prototype.tick = function (spritePosX, spritePosY, ctx) {
