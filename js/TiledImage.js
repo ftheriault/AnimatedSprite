@@ -1,9 +1,13 @@
 class TiledImage {
-	constructor (imagePath, columns, rows, refreshInterval, horizontal, scale, nodeID) {
-		this.nodeID = nodeID;
+	constructor (imagePath, columns, rows, refreshInterval, horizontal, scale, nodeOrId) {
+		if (nodeOrId != null) {
+			this.node = nodeOrId;
 
-		if (this.nodeID != null) {
-			document.getElementById(this.nodeID).style.position = "absolute";
+			if (typeof nodeOrId == "string") {
+				this.node = document.getElementById(nodeOrId);
+			}
+
+			this.node.style.position = "absolute";
 		}
 
 		this.imageList = new Array();
@@ -143,17 +147,17 @@ class TiledImage {
 	tick (spritePosX, spritePosY, ctx) {
 		if (ctx == null) {
 			if (this.imageList[0].complete) {
-				let canvas = document.getElementById(this.nodeID + "-canvas");
+				let canvas = this.node.querySelector("canvas");
 				let w = this.getActualWidth();
 				let h = this.getActualHeight();
 
 				if (canvas == null) {
-					document.getElementById(this.nodeID).innerHTML = "<canvas id='" + this.nodeID + "-canvas' width='" + w + "' height='" + h + "'></canvas>";
-					canvas = document.getElementById(this.nodeID + "-canvas");
+					this.node.innerHTML = "<canvas width='" + w + "' height='" + h + "'></canvas>";
+					canvas = this.node.querySelector("canvas");
 				}
 
-				document.getElementById(this.nodeID).style.left = spritePosX + "px";
-				document.getElementById(this.nodeID).style.top = spritePosY + "px";
+				this.node.style.left = spritePosX + "px";
+				this.node.style.top = spritePosY + "px";
 
 				spritePosX = w/2;
 				spritePosY = h/2;

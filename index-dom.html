@@ -6,14 +6,18 @@
 		<script src="js/TiledImage.js"></script>
 	</head>
 	<body>
-		<div id="spriteDOM" style="border:1px solid red"></div>
+		<div id="container"></div>
 
 		<script>
 			// =======================================================
 			// Embed animation in a div
 			// Works the same way, with the same features, but embeds the sprite in a div instead of a canvas
 			// -------------------------------------------------------
-			let tiledImageDOM = new TiledImage("images/skeleton-walk.png", 9, 4, 100, true, 0.8, "spriteDOM");
+
+			let node = document.createElement("div");
+			document.querySelector("#container").append(node);
+
+			let tiledImageDOM = new TiledImage("images/skeleton-walk.png", 9, 4, 100, true, 0.8, node);
 			tiledImageDOM.addImage("images/item-hood-walk.png");
 
 			tiledImageDOM.changeRow(3);
