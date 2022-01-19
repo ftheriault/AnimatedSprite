@@ -13,7 +13,7 @@ $ npm install --save @ftheriault/animatedsprite
 For this to work, it must be imported in an `index.html` file, and a valid image must be used.
 
 ````
-import TiledImage from './TiledImage.js';
+import TiledImage from '@ftheriault/animatedsprite';
 
 let columnCount = 9;
 let rowCount = 4;
