@@ -1,6 +1,6 @@
 {
   "name": "@ftheriault/animatedsprite",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Utility class to animate a sprite using a sprite sheet",
   "main": "TiledImage.js",
   "scripts": {
