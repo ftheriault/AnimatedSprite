@@ -2,7 +2,7 @@
   "name": "@ftheriault/animatedsprite",
   "version": "1.0.0",
   "description": "Utility class to animate a sprite using a sprite sheet",
-  "main": "index.html",
+  "main": "TiledImage.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
