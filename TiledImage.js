@@ -1,4 +1,4 @@
-class TiledImage {
+export default class TiledImage {
 	constructor (imagePath, columns, rows, refreshInterval, horizontal, scale, nodeOrId) {
 		if (nodeOrId != null) {
 			this.node = nodeOrId;

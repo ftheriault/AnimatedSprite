@@ -1,0 +1,24 @@
+{
+  "name": "@ftheriault/animatedsprite",
+  "version": "1.0.0",
+  "description": "Utility class to animate a sprite using a sprite sheet",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ftheriault/AnimatedSprite.git"
+  },
+  "keywords": [
+    "JavaScript",
+    "2D animation",
+    "Sprite sheet"
+  ],
+  "author": "Frédéric Thériault",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ftheriault/AnimatedSprite/issues"
+  },
+  "homepage": "https://github.com/ftheriault/AnimatedSprite#readme"
+}

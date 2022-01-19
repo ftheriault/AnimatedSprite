@@ -1,5 +1,10 @@
 # AnimatedSprite
-Helper class to animate your sprites
+
+Helper class to animate your sprites.
+
+## Usage
+
+See file [index.html]() for usage on both Canvas and DOM
 
 ## Credits
 Thanks to wulax for the sprite sheet !
