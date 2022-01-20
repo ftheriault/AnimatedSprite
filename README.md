@@ -15,25 +15,24 @@ For this to work, it must be imported from a JavaScript file and used in an HTML
 ````javascript
 import TiledImage from '@ftheriault/animatedsprite';
 
-let columnCount = 9;
-let rowCount = 4;
-let changeTileDelay = 100; //msec
-let loopHorizontally = true;
-let scale = 1.0;
+let columnCount = 9;        // in the sprite sheet
+let rowCount = 4;           // in the sprite sheet
+let changeTileDelay = 100;  // msec. Passing from a cell to the other
+let loopHorizontally = true;// Loop horizontally or vertically?
+let scale = 1.0;            // Default size, could be scaled down or up
 
 let node = document.createElement("div");
 document.body.append(node);
-let tiledImageDOM = new TiledImage("images/skeleton-walk.png", columnCount, rowCount, changeTileDelay, loopHorizontally, scale, node);
+let tiledImage = new TiledImage("images/skeleton-walk.png", columnCount, rowCount, changeTileDelay, loopHorizontally, scale, node);
 
-tiledImageDOM.changeRow(3);
-tiledImageDOM.changeMinMaxInterval(0, 8);
+tiledImage.changeRow(3);    // Which row to display in the sprite sheet
+tiledImage.changeMinMaxInterval(0, 8); // Columns to loop over. In this case, from column 0 to 8
 
-let x = 50;
-let y = 50;
+let posX = 50;
 
 const tick = () => {
-    x += 0.5;
-    tiledImageDOM.tick(x, y);
+    posX += 0.5;
+    tiledImage.tick(posX, y);
 
     window.requestAnimationFrame(tick);
 }
@@ -50,6 +49,8 @@ See `index.html` for examples using Canvas and DOM.
 Thanks to wulax for the sprite sheet !
 http://opengameart.org/content/lpc-medieval-fantasy-character-sprites
 
-## Used with...
+## Creating sprite sheets
 
-This is useful with the tool to create a proper stylesheet : https://github.com/ftheriault/SpriteSheetGridHelper
+To create a sprite sheet with fixed width/height cells, you can use this tool : https://apps-de-cours.com/utils/sprite-sheet-creator
+
+github: https://github.com/ftheriault/SpriteSheetGridHelper
