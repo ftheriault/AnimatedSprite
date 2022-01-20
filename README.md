@@ -10,9 +10,9 @@ $ npm install --save @ftheriault/animatedsprite
 
 ### Simple example
 
-For this to work, it must be imported in an `index.html` file, and a valid image must be used.
+For this to work, it must be imported from a JavaScript file and used in an HTML file. A valid image path must be specified.
 
-````
+````javascript
 import TiledImage from '@ftheriault/animatedsprite';
 
 let columnCount = 9;
@@ -44,7 +44,7 @@ tick();
 
 ### Other examples
 
-See file [index.html]() for usage on both Canvas and DOM
+See `index.html` for examples using Canvas and DOM.
 
 ## Credits
 Thanks to wulax for the sprite sheet !
