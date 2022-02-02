@@ -46,6 +46,13 @@ export default class TiledImage {
 		this.fullImageCount = null;
 		this.fullImageCallback = null;
 		this.stopped = true;
+
+		this.minW = null;
+		this.maxW = null;
+		this.minH = null;
+		this.maxH = null;
+		this.actualWidth = null;
+		this.actualHeight = null;
 	}
 
 	setFullImageLoop (count, fullImageCallback = null) {
@@ -132,16 +139,65 @@ export default class TiledImage {
 		this.angle = angle;
 	}
 
+	updateDimensions() {
+		let originalW = this.imageList[0].width/this.imageTileColCount * this.scale;
+
+		if (originalW > 0) {
+			let originalH = this.imageList[0].height/this.imageTileRowCount * this.scale;
+			let w = originalW;
+			let h = originalH;
+
+			if (this.minW != null && w < this.minW) {
+				w = this.minW;
+				h = w/originalW * originalH;
+			}
+			if (this.maxW != null && w > this.maxW) {
+				w = this.maxW;
+				h = w/originalW * originalH;
+			}
+
+			if (this.minH != null && h < this.minH) {
+				h = this.minH;
+				w = h/originalH * originalW;
+			}
+			if (this.maxH != null && h > this.maxH) {
+				h = this.maxH;
+				w = h/originalH * originalW;
+			}
+
+			this.actualWidth = w;
+			this.actualHeight = h;
+			console.log(this.actualWidth, this.actualHeight)
+		}
+	}
+
 	getActualWidth () {
-		return this.imageList[0].width/this.imageTileColCount * this.scale;
+		if (this.actualWidth == null || this.actualWidth == 0) {
+			this.updateDimensions();
+		}
+
+		return this.actualWidth;
 	}
 
 	getActualHeight () {
-		return this.imageList[0].height/this.imageTileRowCount * this.scale;
+		if (this.actualHeight == null || this.actualHeight == 0) {
+			this.updateDimensions();
+		}
+
+		return this.actualHeight;
 	}
 
 	setPaused (paused) {
 		this.stopped = paused;
+	}
+
+	setMinMaxDimensions(minW, minH, maxW, maxH) {
+		this.minW = minW;
+		this.minH = minH;
+		this.maxW = maxW;
+		this.maxH = maxH;
+		this.actualWidth = null;
+		this.actualHeight = null;
 	}
 
 	tick (spritePosX, spritePosY, ctx) {

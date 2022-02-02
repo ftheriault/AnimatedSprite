@@ -43,10 +43,11 @@ tickCanvas();
 let node = document.createElement("div");
 document.querySelector("#container").append(node);
 
-let tiledImageDOM = new TiledImage("images/skeleton-walk.png", 9, 4, 100, true, 0.8, node);
+let tiledImageDOM = new TiledImage("images/skeleton-walk.png", 9, 4, 100, true, 1.0, node);
 tiledImageDOM.addImage("images/item-hood-walk.png");
 
 tiledImageDOM.changeRow(3);
+tiledImageDOM.setMinMaxDimensions(50, 100, 150, 150);
 
 // Logic where the sprite changes row after animating through its columns
 tiledImageDOM.changeMinMaxInterval(0, 8, () => {
