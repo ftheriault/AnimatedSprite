@@ -167,7 +167,6 @@ export default class TiledImage {
 
 			this.actualWidth = w;
 			this.actualHeight = h;
-			console.log(this.actualWidth, this.actualHeight)
 		}
 	}
 
@@ -212,8 +211,8 @@ export default class TiledImage {
 					canvas = this.node.querySelector("canvas");
 				}
 
-				this.node.style.left = spritePosX + "px";
-				this.node.style.top = spritePosY + "px";
+				this.node.style.left = spritePosX - (w/2) + "px";
+				this.node.style.top = spritePosY - (w/2) + "px";
 
 				spritePosX = w/2;
 				spritePosY = h/2;

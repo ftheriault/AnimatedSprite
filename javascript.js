@@ -55,7 +55,7 @@ tiledImageDOM.changeMinMaxInterval(0, 8, () => {
     tiledImageDOM.changeMinMaxInterval(0, 8);
 });
 
-let x = 50;
+let x = 10;
 let y = 50;
 
 const tickDOM = () => {
