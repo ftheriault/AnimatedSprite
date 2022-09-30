@@ -1,3 +1,8 @@
+/*!
+  * Animated Sprite
+  * Copyright 2011-2022 Frédéric Thériault
+  * Licensed under MIT
+  */
 export default class TiledImage {
 	constructor (imagePath, columns, rows, refreshInterval, horizontal, scale, nodeOrId) {
 		if (nodeOrId != null) {
