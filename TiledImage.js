@@ -136,7 +136,7 @@ export default class TiledImage {
 	}
 
 	resetCol() {
-		this.imageCurrentCol = this.imageAnimationColMin;
+		this.imageCurrentCol = this.imageAnimationMin;
 		this.stopped = false;
 	}
 
