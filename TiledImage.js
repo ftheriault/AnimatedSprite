@@ -118,8 +118,11 @@ export default class TiledImage {
 		max += 1;
 		this.stopped = false;
 
-		if (this.imageTileColCount < max) {
+		if (this.horizontal && this.imageTileColCount < max) {
 			max = this.imageTileColCount;
+		}
+		else if (!this.horizontal && this.imageTileRowCount < max) {
+			max = this.imageTileRowCount;
 		}
 
 		this.imageAnimationMin = min;
