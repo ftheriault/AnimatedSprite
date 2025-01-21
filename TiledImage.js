@@ -80,6 +80,15 @@ export default class TiledImage {
 		this.opacity = opacity;
 	}
 
+	setScale (scale) {
+		this.scale = scale;
+		let w = this.getActualWidth();
+		let h = this.getActualHeight();
+
+		if (this.node != null) {
+			this.node.innerHTML = "<canvas width='" + w + "' height='" + h + "'></canvas>";
+		}
+	}
 
 	setLooped (looped) {
 		this.looped = looped;
